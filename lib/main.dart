@@ -26,14 +26,16 @@ class HomePage extends StatelessWidget {
         title: const Text("Home Page"),
       ),
       body: Container(
-        width: 300,
-        height: 300,
-        alignment: Alignment.centerRight,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.all(Radius.circular(10))
+        constraints: BoxConstraints.expand(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("View A"),
+            Text("View B"),
+            Text("View C"),
+          ],
         ),
-        child: Text("Hello Home Page"),
       ),
     );
   }
