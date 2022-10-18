@@ -30,20 +30,27 @@ class HomePage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                width: 200,
-                height: 200,
-                color: Colors.red,
-                child: Text("View A"),
-              ),
-            ),
             Container(
-              width: 150,
-              height: 150,
-              color: Colors.blue,
-              child: Text("View B"),
+              child: Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Container(
+                    width: 200,
+                    height: 200,
+                    color: Colors.red,
+                    child: Text("View A"),
+                  ),
+                  Positioned(
+                    left: -10,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.blue,
+                      child: Text("View B"),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         )
