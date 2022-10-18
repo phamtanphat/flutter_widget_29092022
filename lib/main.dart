@@ -27,93 +27,26 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Expanded(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: Container(
-                            color: Colors.red,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("A")
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.blue,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("B"),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.green,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("C"),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.orange,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("D"),
-                          )
-                      )
-                    ],
-                  ),
-                )
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: 200,
+                height: 200,
+                color: Colors.red,
+                child: Text("View A"),
+              ),
             ),
-            Expanded(
-                child: Container(
-                  constraints: BoxConstraints.expand(),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                              color: Colors.red,
-                              alignment: Alignment.center,
-                              constraints: BoxConstraints.expand(),
-                              child: Text("A")
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.blue,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("B"),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.green,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("C"),
-                          )
-                      ),
-                      Expanded(
-                          child: Container(
-                            color: Colors.orange,
-                            alignment: Alignment.center,
-                            constraints: BoxConstraints.expand(),
-                            child: Text("D"),
-                          )
-                      )
-                    ],
-                  ),
-                )
-            ),
+            Container(
+              width: 150,
+              height: 150,
+              color: Colors.blue,
+              child: Text("View B"),
+            )
           ],
-        ),
+        )
       ),
     );
   }
