@@ -18,6 +18,7 @@ class _TodoListContainer extends StatefulWidget {
 class _TodoListContainerState extends State<_TodoListContainer> {
 
   late List<Map<String, dynamic>> arrPerson;
+  bool isOpenForm = true;
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         constraints: BoxConstraints.expand(),
         child: Column(
           children: [
-            _formWidget(context),
+            _shouldShowForm(isOpenForm),
             Flexible(
               child: ListView.builder(
                   itemCount: arrPerson.length,
@@ -57,6 +58,14 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         )
       ),
     );
+  }
+
+  Widget _shouldShowForm(bool isOpenForm) {
+    if (isOpenForm) {
+      return _formWidget(context);
+    } else {
+      return _buttonWidget("+", Colors.green);
+    }
   }
 
   Widget _formWidget(BuildContext context) {
@@ -86,7 +95,14 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _buttonWidget(String textButton, Color color) {
+  Widget _buttonWidget(
+      String textButton,
+      Color color,
+      {
+        double verticalPadding = 20,
+        double horizontalPadding = 40
+      }
+  ) {
     return InkWell(
       onTap: (){
 
@@ -98,7 +114,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
                 Radius.circular(5.0)
             ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+        padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
         child: Text(
           textButton,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
