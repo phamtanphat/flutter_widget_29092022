@@ -39,20 +39,43 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
-        child: ListView.builder(
-            itemCount: arrPerson.length,
-            itemBuilder: (context, position){
-              String name = arrPerson[position]["name"];
-              String age = arrPerson[position]["age"].toString();
-              String address = arrPerson[position]["address"];
-              return itemListView(name, age, address);
-            }
+        child: Column(
+          children: [
+            _formWidget(context),
+            Flexible(
+              child: ListView.builder(
+                  itemCount: arrPerson.length,
+                  itemBuilder: (context, position){
+                    String name = arrPerson[position]["name"];
+                    String age = arrPerson[position]["age"].toString();
+                    String address = arrPerson[position]["address"];
+                    return _itemListView(name, age, address);
+                  }
+              ),
+            ),
+          ],
         )
       ),
     );
   }
 
-  Widget itemListView(String name, String age, String address) {
+  Widget _formWidget(BuildContext context) {
+    return Card(
+      color: Color.fromARGB(255, 240, 240, 240),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField()
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget _itemListView(String name, String age, String address) {
     return Card(
       child: ListTile(
         title: Text(
