@@ -45,26 +45,30 @@ class _TodoListContainerState extends State<_TodoListContainer> {
               String name = arrPerson[position]["name"];
               String age = arrPerson[position]["age"].toString();
               String address = arrPerson[position]["address"];
-              return Card(
-                child: ListTile(
-                  title: Text(
-                      "Tên: $name",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
-                  ),
-                  subtitle: Text(
-                      "Tuổi: $age\nĐịa chỉ: $address",
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete ,color: Colors.red),
-                    onPressed: () {
-
-                    },
-                  ),
-                ),
-              );
+              return itemListView(name, age, address);
             }
         )
+      ),
+    );
+  }
+
+  Widget itemListView(String name, String age, String address) {
+    return Card(
+      child: ListTile(
+        title: Text(
+            "Tên: $name",
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+        ),
+        subtitle: Text(
+            "Tuổi: $age\nĐịa chỉ: $address",
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)
+        ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete ,color: Colors.red),
+          onPressed: () {
+
+          },
+        ),
       ),
     );
   }
