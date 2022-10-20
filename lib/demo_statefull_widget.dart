@@ -14,16 +14,19 @@ class _DemoStatefullPageState extends State<DemoStatefullPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Khi nao se duoc goi
   }
 
   @override
   void didUpdateWidget(covariant DemoStatefullPage oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Khi nao se duoc goi
   }
 
   @override
   void dispose() {
     super.dispose();
+    // Khi nao se duoc goi
   }
 
   @override
