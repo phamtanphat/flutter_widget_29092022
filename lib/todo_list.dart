@@ -61,16 +61,67 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   Widget _formWidget(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 240, 240, 240),
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField()
+            _textFormWidget("Input Name"),
+            SizedBox(height: 10),
+            _textFormWidget("Input Age"),
+            SizedBox(height: 10),
+            _textFormWidget("Input Address"),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buttonWidget("Add Word", Colors.green),
+                _buttonWidget("Cancel", Colors.red),
+              ],
+            ),
+            SizedBox(height: 10),
           ],
         )
+      ),
+    );
+  }
+
+  Widget _buttonWidget(String textButton, Color color) {
+    return InkWell(
+      onTap: (){
+
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.all(
+                Radius.circular(5.0)
+            ),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+        child: Text(
+          textButton,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _textFormWidget(String hint) {
+    return TextField(
+      maxLength: 50,
+      maxLines: 1,
+      decoration: InputDecoration(
+        counterText: "",
+        fillColor: Colors.white,
+        filled: true,
+        hintText: hint,
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1)
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1)
+        ),
       ),
     );
   }
