@@ -18,7 +18,7 @@ class _TodoListContainer extends StatefulWidget {
 class _TodoListContainerState extends State<_TodoListContainer> {
 
   late List<Map<String, dynamic>> arrPerson;
-  bool isOpenForm = true;
+  bool isOpenForm = false;
 
   @override
   void initState() {
@@ -61,11 +61,21 @@ class _TodoListContainerState extends State<_TodoListContainer> {
   }
 
   Widget _shouldShowForm(bool isOpenForm) {
+    Widget widget;
     if (isOpenForm) {
-      return _formWidget(context);
+      widget = _formWidget(context);
     } else {
-      return _buttonWidget("+", Colors.green);
+      widget = _buttonWidget(
+          "+",
+          Colors.green,
+          verticalPadding: 15,
+          horizontalPadding: 170
+      );
     }
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: widget,
+    );
   }
 
   Widget _formWidget(BuildContext context) {
@@ -99,8 +109,8 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       String textButton,
       Color color,
       {
-        double verticalPadding = 20,
-        double horizontalPadding = 40
+        double? verticalPadding,
+        double? horizontalPadding
       }
   ) {
     return InkWell(
@@ -114,7 +124,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
                 Radius.circular(5.0)
             ),
         ),
-        padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
+        padding: EdgeInsets.symmetric(vertical: verticalPadding ??= 20, horizontal: horizontalPadding ??= 40),
         child: Text(
           textButton,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
