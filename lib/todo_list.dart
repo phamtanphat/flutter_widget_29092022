@@ -18,7 +18,7 @@ class _TodoListContainer extends StatefulWidget {
 class _TodoListContainerState extends State<_TodoListContainer> {
 
   late List<Map<String, dynamic>> arrPerson;
-  bool isOpenForm = false;
+  late Map<String, dynamic> mapRender;
   late String inputName, inputAge, inputAddress;
 
   @override
@@ -31,6 +31,9 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       {"name": "Hoa", "age": 30, "address": "Quan 5"},
     ];
     inputName = inputAge = inputAddress = "";
+    mapRender = {
+      "isOpenForm": false
+    };
     super.initState();
   }
 
@@ -45,7 +48,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         child: Column(
           children: [
             _shouldShowForm(
-                isOpenForm,
+                mapRender,
                 inputName: inputName,
                 inputAge: inputAge,
                 inputAddress: inputAddress
@@ -67,10 +70,11 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _shouldShowForm(bool isOpenForm, {String? inputName, String? inputAge, String? inputAddress}) {
+  Widget _shouldShowForm(Map<String, dynamic> mapRender, {String? inputName, String? inputAge, String? inputAddress}) {
     Widget widget;
-    if (isOpenForm) {
+    if (mapRender["isOpenForm"]) {
       widget = _formWidget(
+          mapRender,
           context,
           inputName: inputName,
           inputAge: inputAge,
@@ -81,7 +85,12 @@ class _TodoListContainerState extends State<_TodoListContainer> {
           "+",
           Colors.green,
           verticalPadding: 15,
-          horizontalPadding: 170
+          horizontalPadding: 170,
+          onTap: () {
+            setState(() {
+              mapRender["isOpenForm"] = true;
+            });
+          }
       );
     }
     return Container(
@@ -91,12 +100,13 @@ class _TodoListContainerState extends State<_TodoListContainer> {
   }
 
   Widget _formWidget(
+    Map<String, dynamic> mapRender,
     BuildContext context,
-    {
-      String? inputName,
-      String? inputAge,
-      String? inputAddress
-    }
+      {
+        String? inputName,
+        String? inputAge,
+        String? inputAddress,
+      }
   ) {
     return Card(
       child: Container(
@@ -114,7 +124,15 @@ class _TodoListContainerState extends State<_TodoListContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buttonWidget("Add Word", Colors.green),
-                _buttonWidget("Cancel", Colors.red),
+                _buttonWidget(
+                    "Cancel",
+                    Colors.red,
+                    onTap: () {
+                      setState((){
+                        mapRender["isOpenForm"] = false;
+                      });
+                    }
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -129,13 +147,12 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       Color color,
       {
         double? verticalPadding,
-        double? horizontalPadding
+        double? horizontalPadding,
+        Function()? onTap
       }
   ) {
     return InkWell(
-      onTap: (){
-
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
             color: color,
@@ -156,6 +173,9 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     return TextField(
       maxLength: 50,
       maxLines: 1,
+      onChanged: (text) {
+        if (input != null) input = text;
+      },
       decoration: InputDecoration(
         counterText: "",
         fillColor: Colors.white,
