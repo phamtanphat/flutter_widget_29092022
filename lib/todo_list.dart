@@ -22,13 +22,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   @override
   void initState() {
-    arrPerson = [
-      {"name": "Teo", "age": 10, "address": "Quan 1"},
-      {"name": "Ti", "age": 15, "address": "Quan 2"},
-      {"name": "Tun", "age": 20, "address": "Quan 3"},
-      {"name": "Tuan", "age": 25, "address": "Quan 4"},
-      {"name": "Hoa", "age": 30, "address": "Quan 5"},
-    ];
+    arrPerson = [];
     mapRender = {
       "isOpenForm": false,
       "inputName": "",
@@ -36,6 +30,22 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       "inputAddress": "",
     };
     super.initState();
+  }
+
+  void showMessageSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void insertPerson(String name, String age, String address, List<Map<String, dynamic>> arrPerson, VoidCallback onInsertFinish) {
+    if (name.isEmpty || age.isEmpty || address.isEmpty) {
+      showMessageSnackBar("Thông tin chưa đầy đủ");
+      return;
+    }
+    setState((){
+      arrPerson.add({"name": name, "age": age, "address": address});
+      onInsertFinish();
+      showMessageSnackBar("Thêm người dùng mới thành công");
+    });
   }
 
   @override
@@ -48,7 +58,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         constraints: BoxConstraints.expand(),
         child: Column(
           children: [
-            _shouldShowForm(mapRender),
+            _shouldShowForm(mapRender, arrPerson),
             Flexible(
               child: ListView.builder(
                   itemCount: arrPerson.length,
@@ -66,10 +76,10 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _shouldShowForm(Map<String, dynamic> mapRender, {String? inputName, String? inputAge, String? inputAddress}) {
+  Widget _shouldShowForm(Map<String, dynamic> mapRender, List<Map<String, dynamic>> arrPerson) {
     Widget widget;
     if (mapRender["isOpenForm"]) {
-      widget = _formWidget(mapRender, context);
+      widget = _formWidget(mapRender, arrPerson, context);
     } else {
       widget = _buttonWidget(
           "+",
@@ -91,24 +101,49 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   Widget _formWidget(
     Map<String, dynamic> mapRender,
+    List<Map<String, dynamic>> arrPerson,
     BuildContext context
   ) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController ageController = TextEditingController();
+    TextEditingController addressController = TextEditingController();
     return Card(
       child: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _textFormWidget("Input Name", mapRender: mapRender, inputKey: "inputName"),
+            _textFormWidget("Input Name", nameController, mapRender: mapRender, inputKey: "inputName"),
             SizedBox(height: 10),
-            _textFormWidget("Input Age", mapRender: mapRender, inputKey: "inputAge"),
+            _textFormWidget("Input Age", ageController, mapRender: mapRender, inputKey: "inputAge"),
             SizedBox(height: 10),
-            _textFormWidget("Input Address", mapRender: mapRender, inputKey: "inputAddress"),
+            _textFormWidget("Input Address", addressController, mapRender: mapRender, inputKey: "inputAddress"),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buttonWidget("Add Word", Colors.green),
+                _buttonWidget(
+                    "Add Word",
+                    Colors.green,
+                    onTap: (){
+                      String inputName = mapRender["inputName"];
+                      String inputAge = mapRender["inputAge"];
+                      String inputAddress = mapRender["inputAddress"];
+                      // Call back function: Tự implement logic của widget
+                      insertPerson(
+                        inputName,
+                        inputAge,
+                        inputAddress,
+                        arrPerson,
+                        () {
+                          nameController.clear();
+                          ageController.clear();
+                          addressController.clear();
+                          mapRender["isOpenForm"] = !mapRender["isOpenForm"];
+                        }
+                      );
+                    }
+                ),
                 _buttonWidget(
                     "Cancel",
                     Colors.red,
@@ -154,10 +189,11 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _textFormWidget(String hint, {Map<String, dynamic>? mapRender, String inputKey = ""}) {
+  Widget _textFormWidget(String hint, TextEditingController controller,{Map<String, dynamic>? mapRender, String inputKey = ""}) {
     return TextField(
       maxLength: 50,
       maxLines: 1,
+      controller: controller,
       onChanged: (text) {
         if (mapRender != null) mapRender[inputKey] = text;
       },
