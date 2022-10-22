@@ -19,6 +19,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   late List<Map<String, dynamic>> arrPerson;
   bool isOpenForm = false;
+  late String inputName, inputAge, inputAddress;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       {"name": "Tuan", "age": 25, "address": "Quan 4"},
       {"name": "Hoa", "age": 30, "address": "Quan 5"},
     ];
+    inputName = inputAge = inputAddress = "";
     super.initState();
   }
 
@@ -42,7 +44,12 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         constraints: BoxConstraints.expand(),
         child: Column(
           children: [
-            _shouldShowForm(isOpenForm),
+            _shouldShowForm(
+                isOpenForm,
+                inputName: inputName,
+                inputAge: inputAge,
+                inputAddress: inputAddress
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: arrPerson.length,
@@ -60,10 +67,15 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _shouldShowForm(bool isOpenForm) {
+  Widget _shouldShowForm(bool isOpenForm, {String? inputName, String? inputAge, String? inputAddress}) {
     Widget widget;
     if (isOpenForm) {
-      widget = _formWidget(context);
+      widget = _formWidget(
+          context,
+          inputName: inputName,
+          inputAge: inputAge,
+          inputAddress: inputAddress,
+      );
     } else {
       widget = _buttonWidget(
           "+",
@@ -78,18 +90,25 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _formWidget(BuildContext context) {
+  Widget _formWidget(
+    BuildContext context,
+    {
+      String? inputName,
+      String? inputAge,
+      String? inputAddress
+    }
+  ) {
     return Card(
       child: Container(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _textFormWidget("Input Name"),
+            _textFormWidget("Input Name", input: inputName),
             SizedBox(height: 10),
-            _textFormWidget("Input Age"),
+            _textFormWidget("Input Age", input: inputAge),
             SizedBox(height: 10),
-            _textFormWidget("Input Address"),
+            _textFormWidget("Input Address", input: inputAddress),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,7 +152,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _textFormWidget(String hint) {
+  Widget _textFormWidget(String hint, {String? input}) {
     return TextField(
       maxLength: 50,
       maxLines: 1,
