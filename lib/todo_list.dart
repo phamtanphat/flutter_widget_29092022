@@ -19,7 +19,6 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   late List<Map<String, dynamic>> arrPerson;
   late Map<String, dynamic> mapRender;
-  late String inputName, inputAge, inputAddress;
 
   @override
   void initState() {
@@ -30,9 +29,11 @@ class _TodoListContainerState extends State<_TodoListContainer> {
       {"name": "Tuan", "age": 25, "address": "Quan 4"},
       {"name": "Hoa", "age": 30, "address": "Quan 5"},
     ];
-    inputName = inputAge = inputAddress = "";
     mapRender = {
-      "isOpenForm": false
+      "isOpenForm": false,
+      "inputName": "",
+      "inputAge": "",
+      "inputAddress": "",
     };
     super.initState();
   }
@@ -47,12 +48,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
         constraints: BoxConstraints.expand(),
         child: Column(
           children: [
-            _shouldShowForm(
-                mapRender,
-                inputName: inputName,
-                inputAge: inputAge,
-                inputAddress: inputAddress
-            ),
+            _shouldShowForm(mapRender),
             Flexible(
               child: ListView.builder(
                   itemCount: arrPerson.length,
@@ -73,13 +69,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
   Widget _shouldShowForm(Map<String, dynamic> mapRender, {String? inputName, String? inputAge, String? inputAddress}) {
     Widget widget;
     if (mapRender["isOpenForm"]) {
-      widget = _formWidget(
-          mapRender,
-          context,
-          inputName: inputName,
-          inputAge: inputAge,
-          inputAddress: inputAddress,
-      );
+      widget = _formWidget(mapRender, context);
     } else {
       widget = _buttonWidget(
           "+",
@@ -101,12 +91,7 @@ class _TodoListContainerState extends State<_TodoListContainer> {
 
   Widget _formWidget(
     Map<String, dynamic> mapRender,
-    BuildContext context,
-      {
-        String? inputName,
-        String? inputAge,
-        String? inputAddress,
-      }
+    BuildContext context
   ) {
     return Card(
       child: Container(
@@ -114,11 +99,11 @@ class _TodoListContainerState extends State<_TodoListContainer> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _textFormWidget("Input Name", input: inputName),
+            _textFormWidget("Input Name", mapRender: mapRender, inputKey: "inputName"),
             SizedBox(height: 10),
-            _textFormWidget("Input Age", input: inputAge),
+            _textFormWidget("Input Age", mapRender: mapRender, inputKey: "inputAge"),
             SizedBox(height: 10),
-            _textFormWidget("Input Address", input: inputAddress),
+            _textFormWidget("Input Address", mapRender: mapRender, inputKey: "inputAddress"),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -169,12 +154,12 @@ class _TodoListContainerState extends State<_TodoListContainer> {
     );
   }
 
-  Widget _textFormWidget(String hint, {String? input}) {
+  Widget _textFormWidget(String hint, {Map<String, dynamic>? mapRender, String inputKey = ""}) {
     return TextField(
       maxLength: 50,
       maxLines: 1,
       onChanged: (text) {
-        if (input != null) input = text;
+        if (mapRender != null) mapRender[inputKey] = text;
       },
       decoration: InputDecoration(
         counterText: "",
